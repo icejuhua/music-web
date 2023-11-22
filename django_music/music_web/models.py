@@ -12,6 +12,7 @@ class Test_User(models.Model):
     User_Level = models.IntegerField(default=1,null=True)
     User_Cre_DateTime = models.DateField()
 
+
 class Test_DEle(models.Model):
     String = models.TextField(max_length=500)
 

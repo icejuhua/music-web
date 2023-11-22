@@ -1,13 +1,6 @@
 <template>
-   <NavBar/>
-    <div>
-        <p>
-            <router-link :to="{name: 'user_account_login'}">Login</router-link>
-        </p>
-    </div>
+   <NavBar class="navbar"/>
     <router-view/>
-    
-    
 </template>
 
 
@@ -44,7 +37,13 @@ export default{
 </script>
 
 
-<style scoped>
-
+<style>
+body{
+    background:url("./assets/img/background.jpg");
+    background-size: cover;
+}
+.navbar{
+    margin-top: 5px;
+}
 
 </style>

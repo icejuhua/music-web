@@ -1,20 +1,20 @@
 <template>
     <nav class="navbar navbar-expand-lg bg-body-tertiary bg-primary" data-bs-theme="dark">
         <div class="container-fluid">
-        <a class="navbar-brand" href="#">Music Web</a>
+            <router-link class="navbar-brand" :to="{name:'main_page_view'}">Music Web</router-link>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">主页</a>
+                    <router-link class="nav-link" active-class="active" :to="{name:'main_page_view'}">主页</router-link>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="#">Features</a>
+                    <a class="nav-link" href="#">Features</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="#">Pricing</a>
+                    <a class="nav-link" href="#">Pricing</a>
                 </li>
                 <li class="nav-item serach">
                     <input class="form-control me-2" type="search" placeholder="请输入想要查找的内容" aria-label="Search">
@@ -23,11 +23,15 @@
                     <button class="btn btn btn-primary" type="submit">搜索</button>
                 </li>
             </ul>
-            <span class="navbar-text login">
-                <button class="btn btn-outline-success me-2" type="button">登录</button>
+            <span class="navbar-text login-btn">
+                <button  class="btn btn-outline-success me-2" type="button">
+                    <router-link  :to="{name: 'user_account_login'}">登录</router-link>
+                </button>   
             </span>
-            <span class="navbar-text register">
-                <button class="btn btn-outline-success me-2" type="button">注册</button>
+            <span class="navbar-text register-btn">
+                <button  class="btn btn-outline-success me-2" type="button">
+                    <router-link :to="{name: 'user_account_register'}">注册</router-link>
+                </button> 
             </span>
         </div>
         </div>
@@ -57,5 +61,9 @@ export default{
     color: black;
     transform: scale(1.3); /* 按钮放大到原始尺寸的1.1倍 */
     
+}
+.active{
+    color: blue; /* 例如，将激活状态的链接文本颜色设置为红色 */
+    font-weight: bold; /* 设置字体加粗等 */
 }
 </style>

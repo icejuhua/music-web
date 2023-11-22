@@ -10,7 +10,7 @@
         </div>
       </div>
       <!-- 右侧登录区域 -->
-      <div class="col-sm-6 col-md-4">
+      <div class="col-sm-6 col-md-4 login-block">
         <form @submit.prevent="login" class="login-form">
           <h2 class="mb-3 text-info p-3">用户登录</h2>
           <div class="mb-3">
@@ -34,12 +34,15 @@ import { ref } from 'vue';
 import axios from 'axios';
 
 export default{
+  components:{
+       
+    },
   setup(){
     let username = ref('')
     let password = ref('')
     const login = () =>{
       console.log("sending login info"),
-      axios.post("http://101.43.45.110:8000/login_test/",{
+      axios.post("http://101.43.45.110:8000/class_login/",{
         username:username.value,
         password:password.value,
       })
@@ -70,6 +73,7 @@ export default{
       login,
       username,
       password,
+      
     }
 
   }
@@ -79,22 +83,16 @@ export default{
 
 
 <style scoped>
+.login-block{
+  background-color: rgba(204, 189, 189, 0.5);
+  height: 400px;
+}
 .container-fluid{
   
   /* margin: 0%; */
-  height: 100vh;
-}
-.logo-container{
-  width: 100%; /* 使图片宽度填满容器 */
-  height: 100%; /* 使图片高度填满容器 */
-  
-}
-.login-form{
-  margin-top: auto;
-  margin-bottom: auto;
+  margin-top: 15vh;
 }
 .login-row{
-  height: 100vh;
   text-align: center;
 
 }

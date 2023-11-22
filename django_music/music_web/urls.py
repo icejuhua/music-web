@@ -12,7 +12,8 @@ from django.urls import path,include
 urlpatterns = [
     path("",index_test,name = "index"),
     path("vue_test/",vue_test,name="vue_test"),
-    path("login_test/",login_test,name="login_test")
+    path("login_test/",login_test,name="login_test"),
+    path("class_login/",LoginView.as_view(),name="class_login")
 
 
 ]
