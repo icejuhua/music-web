@@ -42,12 +42,15 @@ export default{
     let password = ref('')
     const login = () =>{
       console.log("sending login info"),
-      axios.post("http://101.43.45.110:8000/class_login/",{
+      axios.post("http://101.43.45.110:8000/api/settings/token/",{
         username:username.value,
         password:password.value,
       })
       .then(resp =>{
-        console.log(resp.data.error_msg);
+        console.log(resp);
+        console.log(resp.data);
+        
+        
       })
       .catch(resp =>{
         console.log(resp.error_msg);

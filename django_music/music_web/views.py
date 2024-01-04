@@ -6,7 +6,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
-from django.contrib.auth.hashers import make_password, check_password
 from rest_framework.authtoken.models import Token
 from django.views.decorators.csrf import csrf_exempt
 from .models import Test_User
@@ -41,17 +40,27 @@ def login_test(request):
     return JsonResponse(msg,safe=False)
 
 class LoginView(APIView):
+    @csrf_exempt
     def post(self,request):
         data = json.loads(request.body.decode('utf-8'))  # 获取JSON数据，再进行处理
+        msg = {"error_msg": "success"}
+
         Useraccount = data.get("username")
         Password = data.get("password")
-
-
-        print("user",Useraccount,Password)
-        user = authenticate(User_Account="13363123")
-        print(f"查找到的用户是{user}")
-        if user is not None:
-            token,created = Token.objects.get_or_create(user=user)
-            return JsonResponse({'token':token.key,'error_msg':"success"})
+        User = Test_User.objects.filter(User_Account=Useraccount)
+        if User.exists():
+            if User[0].User_Pwd == Password:
+                token, created = Test_User.objects.get_or_create(user=User)
+                return JsonResponse({'token': token.key, 'error_msg': "success"})
+            else:
+                msg["error_msg"] = "密码错误"
         else:
-            return JsonResponse({'error_msg': "falled"})
+            msg["error_msg"] = "用户不存在"
+            return JsonResponse(msg, safe=False)
+
+
+       # if user is not None:
+       #      token,created = Token.objects.get_or_create(user=user)
+       #      return JsonResponse({'token':token.key,'error_msg':"success"})
+       #  else:
+       #      return JsonResponse({'error_msg': "falled"})
