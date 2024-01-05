@@ -4,9 +4,10 @@ export default ({
     state: {
         id:'',
         username:'',
-        photo:'',
+        name:'',
+        photo_path:'',
         token:'',
-        userlevel:'',
+        role:'',
         is_login:false,
     },
     getters: {
@@ -16,16 +17,18 @@ export default ({
         updataUser(state,user){
             state.id = user.id;
             state.username = user.username;
+            state.name = user.name;
             state.photo = user.photo;
             state.is_login = user.is_login;
             state.userlevel = user.userlevel;
         },
         logout(state){
-            state.id = '',
-            state.username = ''
+            state.id = '';
+            state.username = '';
+            state.name = '';
             state.photo = '';
             state.is_login = false;
-            state.userlevel = '';
+            state.role = '';
         }
     },
     //一般放和后端通信的函数

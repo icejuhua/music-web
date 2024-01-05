@@ -53,7 +53,7 @@ export default{
         
       })
       .catch(resp =>{
-        console.log(resp.error_msg);
+        console.log(resp);
       })
         // $.ajax({
         //   url : "http://101.43.45.110:8000/login_test/",

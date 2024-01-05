@@ -1,5 +1,7 @@
 ## 毕设锐意制作中
 
+## 2024.1.5更新日志
+
 ## 2024.1.4更新日志
 
 快下班的时间有空把jwt的token验证做完了。但是还没弄登录跳转，models的文件结构也需要重新整理。道阻且长阿
@@ -283,7 +285,36 @@ python3 manage.py migrate   # 创建表结构`
 - ![image-20240103111029818](C:\Users\13363\AppData\Roaming\Typora\typora-user-images\image-20240103111029818.png)
 - 登录的时间和注册时间等。
 
-扩展自带的数据库
+#### 修改自带用户系统的密码安全性验证
+
+在settings.py中找到`AUTH_PASSWORD_VALIDATORS`列表，默认是有一些验证方式要求的。这里我为了方便调试全部注释掉
+
+![image-20240105095458922](C:\Users\13363\AppData\Roaming\Typora\typora-user-images\image-20240105095458922.png)
+
+具体的验证方式参考https://docs.djangoproject.com/zh-hans/4.2/topics/auth/passwords/#enabling-password-validation
+
+
+
+#### 扩展自带的数据库
+
+在model中编写需要扩展的类，`music_user`
+
+```python
+from django.db import models
+from django.contrib.auth.models import User
+
+class Music_User(models.Model):
+    #让Django中自带的User表中和这个表一一对应起来，并且当User表执行删除操作的时候，这个表也同步执行删除
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
+    photo_path = models.URLField(max_length=256,blank=True)#头像
+    #这个函数作用是在后台中，在这个表的界面中显示内容，这里显示的是user的名字
+    def __str__(self):
+        return str(self.user)
+```
+
+然后执行迁移数据库的两条命令就好了，这样就能在后台看到添加的自定义数据了
+
+
 
 
 

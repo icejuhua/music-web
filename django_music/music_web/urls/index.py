@@ -3,9 +3,9 @@
 # @Time : 2024/1/4 16:41
 # @Author : lanlan
 # @Email : lanlan_bupt@126.com
-# @File : index.py
+# @File : music_user.py
 # @Software: PyCharm
-from music_web.views import *
+
 from django.urls import path,include
 import music_web.urls.settings.index
 
