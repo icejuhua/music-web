@@ -1,5 +1,5 @@
 <template> 
-    <div class="container-fluid container">
+    <div class="container-fluid container" v-if="!$store.state.user.polling_info">
     <div class="row login-row">
       <!-- 左侧区域 -->
       <div class="col-sm-6 col-md-8 left-section">
@@ -30,8 +30,10 @@
 
 <script>
 import { ref } from 'vue';
+import { useStore } from 'vuex';
+import router from '@/router';
 //import $ from 'jquery';
-import axios from 'axios';
+
 
 export default{
   components:{
@@ -40,38 +42,41 @@ export default{
   setup(){
     let username = ref('')
     let password = ref('')
-    const login = () =>{
-      console.log("sending login info"),
-      axios.post("http://101.43.45.110:8000/api/settings/token/",{
-        username:username.value,
-        password:password.value,
-      })
-      .then(resp =>{
-        console.log(resp);
-        console.log(resp.data);
-        
-        
-      })
-      .catch(resp =>{
-        console.log(resp);
-      })
-        // $.ajax({
-        //   url : "http://101.43.45.110:8000/login_test/",
-        //   type:'post',
-        //   data:{
-        //     username:username.value,
-        //     password:password.value,
-        //   },
-        //   success(resp){
-        //     console.log("login success")
-        //     console.log(resp)
-        //   },
-        //   error(resp){
-        //     console.log(resp)
-        //   }
+    const store = useStore()
 
-        // })
-    };
+    const jwt_token = localStorage.getItem("access_token")
+    if(jwt_token){
+        store.commit("updataAccess",jwt_token);
+        store.dispatch('getinfo',{
+            success(){
+                router.push({name:"main_page_view"})
+            },  
+            error(resp){
+                console.log(resp)
+            }
+        })
+    }
+
+    const login = () =>{
+        store.dispatch("login",{
+            username:username.value,
+            password:password.value,
+            success(){
+                store.dispatch('getinfo',{
+                    success(){
+                        router.push({name:"main_page_view"})
+                    },
+                    error(resp){
+                        console.log(resp)
+                    }
+                })
+            },
+            error(resp){
+                console.log(resp)
+            }
+        })
+    }
+      
     return{
       login,
       username,
@@ -79,8 +84,9 @@ export default{
       
     }
 
-  }
+    }
 }
+
 
 </script>
 

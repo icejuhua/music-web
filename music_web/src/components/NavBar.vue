@@ -23,16 +23,29 @@
                     <button class="btn btn btn-primary" type="submit">搜索</button>
                 </li>
             </ul>
-            <span class="navbar-text login-btn">
+            <ul class="navbar-nav" v-if="$store.state.user.is_login">
+                <span >
                 <button  class="btn btn-outline-success me-2" type="button">
-                    <router-link  :to="{name: 'user_account_login'}">登录</router-link>
+                    {{ $store.state.user.username }}
                 </button>   
-            </span>
-            <span class="navbar-text register-btn">
-                <button  class="btn btn-outline-success me-2" type="button">
-                    <router-link :to="{name: 'user_account_register'}">注册</router-link>
-                </button> 
-            </span>
+                </span>
+            </ul>
+            <ul class="navbar-nav" v-else-if="!$store.state.user.polling_info">
+                <div class="account" >
+                    <span class="navbar-text login-btn">
+                    <button  class="btn btn-outline-success me-2" type="button">
+                        <router-link  :to="{name: 'user_account_login'}">登录</router-link>
+                    </button>   
+                        </span>
+                    <span class="navbar-text register-btn">
+                        <button  class="btn btn-outline-success me-2" type="button">
+                            <router-link :to="{name: 'user_account_register'}">注册</router-link>
+                        </button> 
+                    </span>
+                </div>
+            </ul>
+        
+            
         </div>
         </div>
     </nav>

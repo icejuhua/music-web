@@ -11,6 +11,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from music_web.view.settings.register import Register_Api
+from music_web.view.settings.getinfo import GetInfo_Api
 
 urlpatterns = [
     #path('', name="index"),
@@ -18,6 +19,8 @@ urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     #注册
-    path('register/',Register_Api.as_view(),name='register_api')
+    path('register/',Register_Api.as_view(),name='register_api'),
+    #获取用户信息
+    path("getinfo/",GetInfo_Api.as_view(),name='getinfo_api'),
 ]
 

@@ -5,8 +5,13 @@
 # @Email : lanlan_bupt@126.com
 # @File : register.py
 # @Software: PyCharm
+import json
+
+from django.contrib.auth.models import User
+from rest_framework.decorators import permission_classes
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from music_web.models.user.music_user import Music_User
 
 
 class Register_Api(APIView):
@@ -14,18 +19,41 @@ class Register_Api(APIView):
     #     return Response(...)
 
     def post(self, request):
-        data = request.POST
+        data = json.loads(request.body.decode('utf-8'))  # 使用axios时候必须用这样来获取JSON数据，再进行处理
+
         username = data.get("username","").strip()
         name = data.get("name","").strip()
         password = data.get("password","").strip()
+        password_confim = data.get("password_confirm","").strip()
+        info = data.get("info","").strip()
 
-        print(username,name,password)
-        msg = {
-            "error_msg":"success",
-            "code":200
-        }
+        if not username or not password:
+            return Response({
+                "error_msg" : "用户名和密码不能为空"
+            })
+        if not name:
+            return Response({
+                "error_msg": "昵称不能为空"
+            })
+        if password != password_confim:
+            return Response({
+                "error_msg":"密码不一致"
+            })
+        if User.objects.filter(username=username).exists():
+            return Response({
+                "error_msg": "用户已经存在"
+            })
+        user = User(username=username)
+        user.set_password(password)
+        user.save()
+        if not info:
+            info = "该用户很懒，什么都没写"
+        Music_User.objects.create(user=user,info=info,name=name)
+        return Response({
+            "error_msg": "success"
+        })
 
-        return Response(msg)
+
 
     # def put(self, request, pk):
     #     ...

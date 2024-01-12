@@ -5,3 +5,26 @@
 # @Email : lanlan_bupt@126.com
 # @File : getinfo.py
 # @Software: PyCharm
+import json
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from music_web.models.user.music_user import Music_User
+from django.contrib.auth.models import User
+
+class GetInfo_Api(APIView):
+    permission_classes = ([IsAuthenticated])#用于验证
+    def get(self,request):
+        user = request.user
+        #根据登录的用户返回数据给前端
+        music_user = Music_User.objects.get(user=user)
+        print(music_user)
+        return Response({
+            "username":music_user.user.username,
+            "name":music_user.name,
+            "photo_path":music_user.photo_path,
+            "role":music_user.role,
+            "info":music_user.info,
+            "error_msg": "success",
+        })
+

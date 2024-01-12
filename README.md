@@ -1,6 +1,21 @@
 ## 毕设锐意制作中
 
+## 2024.1.12更新日志
+
+- 完善了注册功能，登录功能，能够实现登录后自动跳转并且把按钮改成用户名
+
+
+
+## 2024.1.10更新日志
+
+- 更新了注册功能，加入了注册提示弹框
+
+
+
+
 ## 2024.1.5更新日志
+
+做了注册的界面绘制，注册的aniox。后端的注册视图还没写。修改了后端的文件结构。修改了用户模型。
 
 ## 2024.1.4更新日志
 
@@ -510,6 +525,10 @@ $.ajax({
 })
 ```
 
+### 对视图进行保护
+
+当遇到需要用户登录才能操作的视图时，比如获取信息等视图可以在方法前添加注释`@permission_classes`来保证当前视图需要验证。或者在类中申明`permission_classes = ([IsAuthenticated])#用于验证`表示当前这个类的所有方法都需要验证。
+
 
 
 
@@ -699,4 +718,56 @@ INSTALLED_APPS = [
 ```
 
 使用`authenticate`验证登录用户的时候，密码匹配的是哈希值密码，所以不能直接修改明文密码
+
+### 组件注册顺序问题
+
+使用`v-model`绑定`ref`响应式变量的时候想在`setup`中打印出来，发现并没有值。这是因为vue3在组件实例话之前就有可能被调用，导致访问不到响应式变量的值。
+
+正确做法
+
+```vue
+import { ref, onMounted } from 'vue';
+
+// ...
+
+setup() {
+  let username = ref("");
+  let name = ref("");
+
+  // ... 其他数据
+
+  onMounted(() => {
+    console.log(username.value);
+    console.log(name.value);
+  });
+
+  // ... 返回数据和方法
+}
+
+```
+
+
+
+### 在不同组件中传递数据
+
+我想在`UserAccountRegister.vue`中把注册错误信息传递给弹窗组件`ModelCompontens.vue`可以这么做
+
+在`Reginster`中
+
+```vue
+<ModelComponents :error_msg="error_message"/>使用:自定义名称传递error_message的值
+```
+
+在`ModelComponents`中在`stript`中使用props获取值
+
+```vue
+props:{
+        error_msg:{
+            type:String,
+            required:true,
+        },
+},
+```
+
+error_msg就是父组件传递的自定义名称
 

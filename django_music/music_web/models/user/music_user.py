@@ -14,13 +14,9 @@ class Music_User(models.Model):
     name = models.CharField(max_length=20,default="user")#用户昵称
     role = models.IntegerField(default=1)#用户角色
     photo_path = models.CharField(max_length=556,default="/test/")#头像 为空给个默认头像
-    info = models.TextField(max_length=5,default="该用户很懒，什么都没输入")
+    info = models.TextField(default="该用户很懒，什么都没输入")
 
 
     #这个函数作用是在后台中，在这个表的界面中显示内容，这里显示的是user的名字
     def __str__(self):
         return str(self.user)
-
-# class Test3(models.Model):
-#     Test_id = models.IntegerField(max_length=200)
-#     Test_char = models.CharField(max_length=100)

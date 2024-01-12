@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import UserAccountLoginView from '@/views/user/account/UserAccountLoginView'
 import UserAccountRegisterView from '@/views/user/account/UserAccountRegisterView'
 import MainPageView from '@/views/MainPageView'
+import store from '@/store/index'
 
 const routes = [
     {
@@ -35,5 +36,11 @@ const router = createRouter({
   history: createWebHistory(),
   routes
 })
-
+router.beforeEach((to , from ,next) => {
+    if(to.meta.requestAuth && !store.state.user.is_login){
+      next({name : 'user_account_login'});
+    } else{
+      next();
+    }
+  })
 export default router
