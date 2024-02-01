@@ -54,7 +54,7 @@ REST_FRAMEWORK = {
 }
 #添加JWT配置
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=14),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': False,
@@ -195,3 +195,8 @@ CORS_ALLOW_METHODS = [
     "POST",
     "PUT",
 ]
+
+
+#七牛云的ak和sk
+qiniu_access_key = 'saZHoFz6iFUTx1fLfRL-yLyb3NbLnCiPLIpsuGkQ'
+qiniu_secret_key = 'Lw5_hg6pjnqDZMS3H_ZtkkcbHsBmfaCQFsflfUQK'

@@ -529,7 +529,99 @@ $.ajax({
 
 当遇到需要用户登录才能操作的视图时，比如获取信息等视图可以在方法前添加注释`@permission_classes`来保证当前视图需要验证。或者在类中申明`permission_classes = ([IsAuthenticated])#用于验证`表示当前这个类的所有方法都需要验证。
 
+### Django中Post和Get区别
 
+在前端使用axios传递数据的时候，默认是进行一个json封装的。并且如果后端的api需要验证post和get是有区别的
+
+#### post
+
+```js
+//在post方法中验证头应该放在第三个参数
+axios.post("http://101.43.45.110:8000/api/settings/upload-token/",{
+            key_name:store.state.user.username
+        },{
+            headers:{
+                Authorization: "Bearer " + store.state.user.access_token,
+            },
+        }
+        )
+```
+
+#### get
+
+```js
+//在post方法中验证头应该放在第三个参数
+axios.get("http://101.43.45.110:8000/api/settings/upload-token/",{
+            headers:{
+                Authorization: "Bearer " + store.state.user.access_token,
+            },
+        },{
+            key_name:store.state.user.username
+        }
+        )
+```
+
+在后端需要取值的时候使用
+
+```python
+data = json.loads(request.body.decode('utf-8'))  # 使用axios时候必须用这样来获取JSON数据，再进行处理
+```
+
+Get方式没研究，所以需要传值的都用post方式就好
+
+
+
+
+
+## 使用七牛云图传数据库
+
+如何上传图片到数据库
+
+1. 新建空间，并且设置为公开权限，方便操作。私有的话访问不能通过链接直接访问比较麻烦![image-20240201113447102](C:\Users\13363\AppData\Roaming\Typora\typora-user-images\image-20240201113447102.png)
+
+2. 根据七牛云文档，在后端编写生成token的代码,如下图
+
+3. 前端发送请求的时候需要带上token，具体参考https://developer.qiniu.com/kodo/1272/form-upload
+
+4. 上传完图片后，由于七牛云用了CDN加速，还需要发送刷新CDN请求的api
+
+   ```python
+   q = Auth("saZHoFz6iFUTx1fLfRL-yLyb3NbLnCiPLIpsuGkQ", "Lw5_hg6pjnqDZMS3H_ZtkkcbHsBmfaCQFsflfUQK")
+   data = json.loads(request.body.decode('utf-8'))  # 使用axios时候必须用这样来获取JSON数据，再进行处理
+   # 要上传的空间
+   bucket_name = 'icejuhua'
+   # 上传后保存的文件名
+   key = data.get("key_name", "").strip()
+   key = key + '.png'
+   print(key)
+   # 生成上传 Token，可以指定过期时间等
+   upload_token = q.upload_token(bucket_name, key, 3600)
+   ```
+
+
+
+
+
+## Django中配置全局配置变量
+
+有时候我需要一些全局的自定义变量，比如密钥，以便在项目中可以统一修改
+
+只需要在settings中定义就可以了
+
+```python
+#七牛云的ak和sk
+qiniu_access_key = 'xxxx'
+qiniu_secret_key = 'xxxx'
+
+```
+
+在需要引用的地方
+
+```python
+from django.conf import settings
+
+ak = settings.qiniu_access_key
+```
 
 
 

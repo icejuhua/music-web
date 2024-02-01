@@ -22,6 +22,7 @@
             <input v-model="password" type="password" class="form-control" id="password" >
           </div>
           <button type="submit" class="btn btn-primary">登录</button>
+          <div style="color: red;">{{ error_msg }}</div>
         </form>
       </div>
     </div>
@@ -42,17 +43,21 @@ export default{
   setup(){
     let username = ref('')
     let password = ref('')
+    let error_msg = ref('')
     const store = useStore()
 
     const jwt_token = localStorage.getItem("access_token")
+    
     if(jwt_token){
         store.commit("updataAccess",jwt_token);
         store.dispatch('getinfo',{
             success(){
                 router.push({name:"main_page_view"})
+                store.commit("updataPullinginfo",false)
             },  
             error(resp){
                 console.log(resp)
+                store.commit("updataPullinginfo",false)
             }
         })
     }
@@ -64,14 +69,17 @@ export default{
             success(){
                 store.dispatch('getinfo',{
                     success(){
+                        window.alert("登录成功")
                         router.push({name:"main_page_view"})
                     },
                     error(resp){
+                        error_msg.value = '登录失败'
                         console.log(resp)
                     }
                 })
             },
             error(resp){
+                error_msg.value = '登录失败'
                 console.log(resp)
             }
         })
@@ -81,6 +89,7 @@ export default{
       login,
       username,
       password,
+      error_msg,
       
     }
 

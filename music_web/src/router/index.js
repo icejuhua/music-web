@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import UserAccountLoginView from '@/views/user/account/UserAccountLoginView'
 import UserAccountRegisterView from '@/views/user/account/UserAccountRegisterView'
 import MainPageView from '@/views/MainPageView'
+import UserInfoView from '@/views/user/account/UserInfoView'
 import store from '@/store/index'
 
 const routes = [
@@ -29,6 +30,14 @@ const routes = [
           requestAuth : true,
         },
     },
+    {
+        path:'/user/account/userinfo',
+        name:'user_account_userinfo',
+        component:UserInfoView,
+        meta:{
+            requestAuth : true,
+        }
+    }
 
 ]
 

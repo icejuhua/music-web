@@ -42,6 +42,7 @@
 import ContentField from '@/components/ContentField.vue'
 import { ref } from 'vue'
 import axios from 'axios'
+import router from '@/router'
 
 import ModelComponents from '@/components/ModelComponents.vue'
 export default{
@@ -73,6 +74,10 @@ export default{
                 if(resp.data != "success"){
                     error_message.value = resp.data.error_msg
                     
+                }
+                else{
+                    window.alert("注册成功")
+                    router.push({name:"user_account_login"})
                 }
             })
             .catch(resp=>{

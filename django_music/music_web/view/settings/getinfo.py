@@ -10,7 +10,6 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from music_web.models.user.music_user import Music_User
-from django.contrib.auth.models import User
 
 class GetInfo_Api(APIView):
     permission_classes = ([IsAuthenticated])#用于验证

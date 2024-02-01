@@ -11,11 +11,14 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap/dist/js/bootstrap"
 import NavBar from "@/components/NavBar.vue"
 
+
+
+
 export default{        
         components:{
             NavBar,
-        }
-
+        },
+        
     }
 
 
@@ -23,6 +26,9 @@ export default{
 
 
 <style>
+
+
+
 body{
     background:url("./assets/img/background.jpg");
     background-size: cover;

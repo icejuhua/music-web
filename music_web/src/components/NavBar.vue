@@ -23,12 +23,22 @@
                     <button class="btn btn btn-primary" type="submit">搜索</button>
                 </li>
             </ul>
+
+
+
+
+
             <ul class="navbar-nav" v-if="$store.state.user.is_login">
-                <span >
-                <button  class="btn btn-outline-success me-2" type="button">
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     {{ $store.state.user.username }}
-                </button>   
-                </span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><router-link :to='{name:"user_account_userinfo"}' class="dropdown-item">我的个人信息</router-link></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#" @click="logout">退出</a></li>
+                  </ul>
+                </li>
             </ul>
             <ul class="navbar-nav" v-else-if="!$store.state.user.polling_info">
                 <div class="account" >
@@ -52,7 +62,19 @@
 </template>
 
 <script>
+import { useStore } from 'vuex';
 export default{
+    setup(){
+        const store = useStore()
+        const logout = () =>{
+            store.dispatch("logout")
+            
+        }
+        return{
+            logout,
+        }
+
+    }
 
 }
 </script>
