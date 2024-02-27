@@ -1,5 +1,16 @@
 ## 毕设锐意制作中
 
+## 2024.2.26更新日志
+
+- 添加了歌曲到七牛云并同步到数据库中
+- 添加了播放界面，使用Aplayer组件作为播放的主要工具
+- 更新了歌曲列表。主界面中能显示每首歌的信息了
+
+## 2024.2.7更新日志
+
+- 更新了上传头像后刷新api的功能，不用手动去七牛云刷新了
+- 添加了音乐模型，准备设计主界面了
+
 ## 2024.2.1更新日志
 
 好久没有推代码了，最近比较忙写的不多
@@ -238,7 +249,8 @@ module.exports = {
 
 
 
-- 在后端中的`setting.py`中，如果在开发环境下，`DEBUG`最好设置为True，不然访问页面不会报具体的错误
+- 在后端中的`settings.py`中，如果在开发环境下，`DEBUG`最好设置为True，不然访问页面不会报具体的错误
+- 想要引用`settings.py`中的数据，变量必须是大写，否则报错
 
 
 
@@ -315,7 +327,7 @@ python3 manage.py migrate   # 创建表结构`
 
 ![image-20240105095458922](C:\Users\13363\AppData\Roaming\Typora\typora-user-images\image-20240105095458922.png)
 
-具体的验证方式参考https://docs.djangoproject.com/zh-hans/4.2/topics/auth/passwords/#enabling-password-validation
+具体的验证方式参考https://doc.s.djangoproject.com/zh-hans/4.2/topics/auth/passwords/#enabling-password-validation
 
 
 
@@ -595,10 +607,10 @@ Get方式没研究，所以需要传值的都用post方式就好
 4. 上传完图片后，由于七牛云用了CDN加速，还需要发送刷新CDN请求的api
 
    ```python
-   q = Auth("saZHoFz6iFUTx1fLfRL-yLyb3NbLnCiPLIpsuGkQ", "Lw5_hg6pjnqDZMS3H_ZtkkcbHsBmfaCQFsflfUQK")
+   q = Auth(ak, sk)
    data = json.loads(request.body.decode('utf-8'))  # 使用axios时候必须用这样来获取JSON数据，再进行处理
    # 要上传的空间
-   bucket_name = 'icejuhua'
+   bucket_name = name
    # 上传后保存的文件名
    key = data.get("key_name", "").strip()
    key = key + '.png'
@@ -607,7 +619,11 @@ Get方式没研究，所以需要传值的都用post方式就好
    upload_token = q.upload_token(bucket_name, key, 3600)
    ```
 
+### 上传文件
 
+如果想要在储存空间中分文件并且把文件上传到对应的文件夹中。那么需要在文件名前+文件夹名
+
+例如我要
 
 
 
@@ -871,4 +887,26 @@ props:{
 ```
 
 error_msg就是父组件传递的自定义名称
+
+### VUEX
+
+在vuex中我的项目是在主模块index.js底下创建许多个分模块
+
+![image-20240223152142832](C:\Users\13363\AppData\Roaming\Typora\typora-user-images\image-20240223152142832.png)
+
+然而如果想在子模块中访问主模块或者分模块的`state`或者`getter`中的数据需要这样做
+
+```javascript
+//子模块访问主模块
+//需要在使用的函数中传入rootState参数
+function(rootState){
+    rootState.state||getter.xxx
+}
+//子模块访问子模块
+function(rootState){
+    rootState.子模块名.state||getter.xxx
+}
+```
+
+
 

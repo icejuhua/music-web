@@ -14,7 +14,7 @@ from music_web.view.settings.register import Register_Api
 from music_web.view.settings.getinfo import GetInfo_Api
 from music_web.view.settings.test import AutuTest
 from music_web.view.settings.changeinfo import ChangeInfo
-from music_web.view.settings.uploadHeadImage import uploadImg
+from music_web.view.settings.uploadHeadImage import uploadImg,reFreshCDN
 
 urlpatterns = [
     #path('', name="index"),
@@ -30,7 +30,9 @@ urlpatterns = [
     #修改个人信息
     path("changeinfo/",ChangeInfo.as_view(),name='changeinfo'),
     #获取上传七牛云的token
-    path("upload-token/",uploadImg.as_view(),name='uploadImg')
+    path("upload-token/",uploadImg.as_view(),name='uploadImg'),
+    #获取刷新CDN的链接
+    path("refresh-cdn/",reFreshCDN.as_view(),name='refresh-cdn')
 
 ]
 

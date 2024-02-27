@@ -8,10 +8,13 @@
 
 from django.urls import path,include
 import music_web.urls.settings.index
+import music_web.urls.mainview.index
 
 urlpatterns = [
     #path('',name="index"),
-    path('settings/',include(music_web.urls.settings.index))
+    path('settings/',include(music_web.urls.settings.index)),
+    #主界面的路由
+    path("mainview/",include(music_web.urls.mainview.index))
 
 
 ]

@@ -198,5 +198,8 @@ CORS_ALLOW_METHODS = [
 
 
 #七牛云的ak和sk
-qiniu_access_key = 'saZHoFz6iFUTx1fLfRL-yLyb3NbLnCiPLIpsuGkQ'
-qiniu_secret_key = 'Lw5_hg6pjnqDZMS3H_ZtkkcbHsBmfaCQFsflfUQK'
+QINIU_ACCESS_KEY = 'saZHoFz6iFUTx1fLfRL-yLyb3NbLnCiPLIpsuGkQ'
+QINIU_SECRET_KEY = 'Lw5_hg6pjnqDZMS3H_ZtkkcbHsBmfaCQFsflfUQK'
+#自定义域名
+VATE_URL="http://zd.vatebur.cn/"
+
