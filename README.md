@@ -1,5 +1,11 @@
 ## 毕设锐意制作中
 
+## 2024.2.27更新日志
+
+- 添加了主页面分页功能
+- 添加了下载源文件的功能
+- 添加了转码下载和加入喜爱的按钮，功能还未实现
+
 ## 2024.2.26更新日志
 
 - 添加了歌曲到七牛云并同步到数据库中
@@ -906,6 +912,41 @@ function(rootState){
 function(rootState){
     rootState.子模块名.state||getter.xxx
 }
+```
+
+### 下载相关
+
+在前端中如果下载资源和当前页面同源，使用a标签加上download属性即可下载,download属性可以指定下载文件名
+
+```html
+<a href="xxxx.jpg" download="test.txt"></a>
+```
+
+如果不是同源，添加了download的属性，如果文件时浏览器能解析的问题，比如图片，音频，视频，则会进行显示，并不会下载。如果文件是其他类型，则会下载。
+
+所有我采用通过`js`的方式下载成`blob`的格式再返回浏览器。这种方式下载浏览器不会显示下载进度
+
+```javascript
+download_music(content,data){
+            console.log("开始下载");
+            console.log("data",data);
+            console.log(data.url);
+            
+            axios.get(data.url, {
+                responseType: 'blob'
+            })
+            .then(response => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', data.name+data.music_type);
+                document.body.appendChild(link);
+                link.click();
+            })
+            .catch(error => {
+                console.error('下载失败', error);
+            });
+        }
 ```
 
 

@@ -1,5 +1,4 @@
 
-
 import axios from "axios"
 
 export default({
@@ -29,6 +28,7 @@ export default({
             )
             .then(resp => {
                 commit("updataMusicList",resp.data.music_list)
+
                 data.success()
 
             })
@@ -36,7 +36,29 @@ export default({
                 console.log(resp);
             })
             
+        },
+        download_music(content,data){
+            console.log("开始下载");
+            console.log("data",data);
+            console.log(data.url);
+            
+            axios.get(data.url, {
+                responseType: 'blob'
+            })
+            .then(response => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', data.name+data.music_type);
+                document.body.appendChild(link);
+                link.click();
+            })
+            .catch(error => {
+                console.error('下载失败', error);
+            });
         }
+
+
     },
     modules: {
         

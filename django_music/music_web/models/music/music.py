@@ -18,6 +18,7 @@ class Music(models.Model):
     music_creater = models.CharField(null=True,default="未知创作家",max_length=200)
     music_upload_user_id = models.IntegerField(null=True,blank=True)#允许为空为了直接添加数据比较方便
     music_upload_time = models.DateTimeField(auto_now=True)#每次保存的时候自动储存时间，前端就不需要操作了
+    music_type = models.CharField(null=True,blank=True,max_length=50)#上传的音乐类型
 
 
     def __str__(self):

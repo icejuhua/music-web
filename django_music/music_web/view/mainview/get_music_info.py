@@ -23,8 +23,10 @@ class GetMusicInfo(APIView):
                 "url": music.music_path,
                 "cover": music.music_image,
                 "lrc": music.music_lrc_path,
-                "total_time":music.music_total_time
+                "total_time":music.music_total_time,
+                "music_type":music.music_type,
             }
+
 
             res_list.append(formatted_music)
 

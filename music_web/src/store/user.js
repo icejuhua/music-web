@@ -149,6 +149,7 @@ export default ({
         },
         //更新用户信息
         changeinfo(content,data){
+            
             content.dispatch("updataAccessFromRefresh")
             axios.post("http://101.43.45.110:8000/api/settings/changeinfo/",{
                 name:data.name,
