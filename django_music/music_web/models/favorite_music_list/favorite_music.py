@@ -5,3 +5,10 @@
 # @Email : lanlan_bupt@126.com
 # @File : music_user.py
 # @Software: PyCharm
+from django.db import models
+
+class Favorite_Music(models.Model):
+    user_id = models.IntegerField()
+    music_id = models.IntegerField()
+
+

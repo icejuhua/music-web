@@ -52,7 +52,9 @@
                                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#passwordmodel" style="margin-left: 10px;" >修改密码</button>
                                 <UserChangeModel/>
                             </div>
-                            <button class="btn btn-secondary">歌单</button>
+                            <button class="btn btn-secondary">
+                                <router-link style="color:aliceblue;" :to="{name:'favorite_music'}">我的最爱</router-link>
+                            </button>
                         </div>
                     </div>
                 </div>

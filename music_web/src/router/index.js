@@ -4,8 +4,17 @@ import UserAccountRegisterView from '@/views/user/account/UserAccountRegisterVie
 import MainPageView from '@/views/MainPageView'
 import UserInfoView from '@/views/user/account/UserInfoView'
 import store from '@/store/index'
+import MyFavoriteMusicView from '@/views/MyFavoriteMusicView'
 
 const routes = [
+    {
+        path:"/user/myfavorite-music",
+        name:'favorite_music',
+        component:MyFavoriteMusicView,
+        meta:{
+            requestAuth:true
+        }
+    },
     {
         path:'/user/account/login',
         name:'user_account_login',

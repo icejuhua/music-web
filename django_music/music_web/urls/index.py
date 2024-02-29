@@ -9,12 +9,13 @@
 from django.urls import path,include
 import music_web.urls.settings.index
 import music_web.urls.mainview.index
-
+import music_web.urls.music_list.index
 urlpatterns = [
     #path('',name="index"),
     path('settings/',include(music_web.urls.settings.index)),
     #主界面的路由
-    path("mainview/",include(music_web.urls.mainview.index))
-
+    path("mainview/",include(music_web.urls.mainview.index)),
+    #歌单的路由
+    path("music-list/",include(music_web.urls.music_list.index))
 
 ]

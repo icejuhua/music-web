@@ -19,12 +19,17 @@ export default({
 
     },
     actions: {
-        get_music_info({commit,rootState},data){
+        get_music_info({commit,rootState,dispatch},data){
+            console.log(data.get_type);
+            dispatch('user/updataAccessFromRefresh');
             axios.get(rootState.url+"mainview/get-music-info/",{
                 headers:{
                     Authorization: "Bearer " + rootState.user.access_token,
                 },
-            }
+                params: {
+                    get_type: data.get_type
+                }
+            },
             )
             .then(resp => {
                 commit("updataMusicList",resp.data.music_list)
@@ -52,6 +57,7 @@ export default({
                 link.setAttribute('download', data.name+data.music_type);
                 document.body.appendChild(link);
                 link.click();
+                document.body.removeChild(link)
             })
             .catch(error => {
                 console.error('下载失败', error);

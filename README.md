@@ -1,5 +1,16 @@
 ## 毕设锐意制作中
 
+## 2024.2.29更新日志
+
+- 修改了加入喜爱的图标，添加了从歌单中移除的功能
+- 添加了转码下载的api，还在测试，转码传输后下载的数据不对
+- 后面准备搞评论功能，就差不多了
+
+## 2024.2.28更新日志
+
+- 添加了喜爱音乐的数据库，和加入的功能。
+- 添加喜爱音乐列表的数据库
+
 ## 2024.2.27更新日志
 
 - 添加了主页面分页功能
@@ -594,7 +605,15 @@ axios.get("http://101.43.45.110:8000/api/settings/upload-token/",{
 data = json.loads(request.body.decode('utf-8'))  # 使用axios时候必须用这样来获取JSON数据，再进行处理
 ```
 
-Get方式没研究，所以需要传值的都用post方式就好
+Get方式的取值
+
+```python
+def get(self,request):
+        #直接取值就好，Axios会把get请求的参数放到请求头里，所有axios的post和get带参数是有区别的
+        get_type = request.GET.get("get_type")
+```
+
+
 
 
 
@@ -741,11 +760,11 @@ const login = () =>{}
 
 ### 使用axios和后端进行交互
 
-使用axios替换jquery，更好用。请注意，axios使用的是异步的方式，所有要取到返回的值需要特殊处理
+使用axios替换jquery，更好用。请注意，axios使用的是异步的方式，所以要取到返回的值需要特殊处理
 
 **以下是使用`async/await`的例子：**
 
-```
+```javascript
 setup() {
   const sendData = async () => {
     console.log("sending");
@@ -768,7 +787,7 @@ setup() {
 
 **或者使用 `.then()`：**
 
-```
+```javascript
 setup() {
   const sendData = () => {
     console.log("sending");
@@ -790,6 +809,30 @@ setup() {
 }
 
 ```
+
+#### Axios带参数发送Post和Get请求
+
+假设都需要请求头，保证后端安全
+
+Post请求
+
+```javascript
+axios.post(url,{
+    name:data.name,
+    info:data.info,
+},{
+    headers:{
+        Authorization: "Bearer " + content.state.access_token,
+    },
+}
+//这是带上验证的请求
+```
+
+
+
+
+
+
 
 ### 设置全局样式注意点
 
@@ -914,6 +957,21 @@ function(rootState){
 }
 ```
 
+如果想在一个模块中访问另一个模块的`action`中的函数可以这么做
+
+```javascript
+//在函数名中引入dispatch属性
+get_music_info({commit,rootState,dispatch},data)
+//直接调用user模块的action函数
+dispatch('user/updataAccessFromRefresh');
+```
+
+
+
+
+
+
+
 ### 下载相关
 
 在前端中如果下载资源和当前页面同源，使用a标签加上download属性即可下载,download属性可以指定下载文件名
@@ -924,7 +982,7 @@ function(rootState){
 
 如果不是同源，添加了download的属性，如果文件时浏览器能解析的问题，比如图片，音频，视频，则会进行显示，并不会下载。如果文件是其他类型，则会下载。
 
-所有我采用通过`js`的方式下载成`blob`的格式再返回浏览器。这种方式下载浏览器不会显示下载进度
+所以我采用通过`js`的方式下载成`blob`的格式再返回浏览器。这种方式下载浏览器不会显示下载进度
 
 ```javascript
 download_music(content,data){
@@ -951,3 +1009,7 @@ download_music(content,data){
 
 
 
+## 存在的BUG
+
+- [ ] 对于其他界面，如果用户的token过期，后端无法访问。前端应该能够自动到登录界面
+- [ ] 在新建用户时，默认没有头像，新建头像的话头像路径没有填进数据库

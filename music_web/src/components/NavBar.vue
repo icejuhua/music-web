@@ -10,12 +10,6 @@
                 <li class="nav-item">
                     <router-link class="nav-link" active-class="active" :to="{name:'main_page_view'}">主页</router-link>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Features</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Pricing</a>
-                </li>
                 <li class="nav-item serach">
                     <input class="form-control me-2" type="search" placeholder="请输入想要查找的内容" aria-label="Search">
                 </li>

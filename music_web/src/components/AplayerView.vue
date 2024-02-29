@@ -21,11 +21,21 @@
                             </el-dropdown-menu>
                             </template>
                         </el-dropdown>
-                        <el-icon size="40" class="Plus"><Plus /></el-icon>
+                        <div v-if="$route.name == 'main_page_view'">
+                            <el-button v-if="!row.add_status" circle @click="addMusicButton(row)" type="primary" class="Plus">
+                                <el-icon size="30"><CirclePlus /></el-icon>
+                            </el-button>
+                            <el-button v-else circle class="Close" type="primary"  @click="delMusicButton(row)">
+                                <el-icon plain ><CloseBold /></el-icon>
+                            </el-button>
+                        </div>
+                        
                     </template>
                 </el-table-column>
                 <el-table-column v-if="false" prop="url" label="新列" show-overflow-tooltip></el-table-column>
                 <el-table-column v-if="false" prop="music_type" label="新列" show-overflow-tooltip></el-table-column>
+                <el-table-column v-if="false" prop="music_id" label="新列" show-overflow-tooltip></el-table-column>
+                <el-table-column v-if="false" prop="add_status" label="新列" show-overflow-tooltip></el-table-column>
             </el-table>
             
             <div class="example-pagination-block">
@@ -52,6 +62,9 @@
 import APlayer from "@worstone/vue-aplayer";
 import { useStore } from 'vuex'
 import { ref  } from "vue"
+import { useRoute } from "vue-router";
+import axios from "axios";
+import { ElNotification } from 'element-plus'
 export default {
 components:{
             APlayer
@@ -65,20 +78,47 @@ components:{
         let currentPage = ref(1);
         let pageSize = ref(5);
         let total = ref(0);
-    
+        const route = useRoute()
+        console.log(route.name);
         
-        store.dispatch("get_music_info",{
-            success(){
-                flag.value = true
-                audio.value = store.state.music.musicList
-                //获取数据长度
-                total.value = store.state.music.musicList.length;
-                console.log(store.state.music.musicList);
-                // 在组件加载时触发一次初始化
-                handleCurrentChange(currentPage.value);
-                
-            }
+
+        const success_msg = () => {
+        ElNotification({
+            title: 'Success',
+            message: '操作成功',
+            type: 'success',
         })
+        }
+        const error_msg = () => {
+        ElNotification({
+            title: 'Error',
+            message: '操作失败，请检查网络',
+            type: 'error',
+        })
+        }
+        const get_info = (type) =>{
+            store.dispatch("get_music_info",{
+                get_type:type,
+                success(){
+                    flag.value = true
+                    audio.value = store.state.music.musicList
+                    //获取数据长度
+                    total.value = store.state.music.musicList.length;
+                    console.log(store.state.music.musicList);
+                    // 在组件加载时触发一次初始化
+                    handleCurrentChange(currentPage.value);
+                    
+                }
+        })
+        }
+        //不同的页面显示不同的效果
+        if(route.name == 'main_page_view'){
+            get_info("all")
+        }
+        else if(route.name == 'favorite_music'){
+            get_info("favorite")
+        }
+        
 
         const handleCurrentChange = (newPage) => {
             // 根据新的页码和每页显示数量计算起始索引和结束索引
@@ -96,7 +136,7 @@ components:{
         }
         //点击按钮事件
         const handleButtonClick = (row) => {
-            console.log(row.url);
+            
             //调用下载
             store.dispatch("download_music",{
                 url:row.url,
@@ -105,11 +145,66 @@ components:{
             })
             window.alert("正在下载请稍后")
         };
+
+        //添加歌单函数
+        const addMusicButton = (row) => {
+            axios.post(store.state.url+"music-list/add-favorite-music/",{
+                user_id:store.state.user.user_id,
+                music_id:row.music_id,
+            },{
+                headers:{
+                    Authorization: "Bearer " + store.state.user.access_token,
+                },
+            })
+            .then(resp =>{
+                if(resp.data.error_msg == "success"){
+                    get_info("all")
+                    success_msg()
+                }
+                else{
+                    error_msg()
+                }
+                
+                console.log(resp.data);
+            })
+            .catch(resp =>{
+                console.log(resp.data);
+                error_msg()
+            })
+        }
+        //删除歌单函数
+        const delMusicButton = (row) => {
+            axios.post(store.state.url+"music-list/del-favorite-music/",{
+                user_id:store.state.user.user_id,
+                music_id:row.music_id,
+            },{
+                headers:{
+                    Authorization: "Bearer " + store.state.user.access_token,
+                }
+            })
+            .then(resp =>{
+                if(resp.data.error_msg == 'success'){
+                    get_info("all"),
+                    success_msg()
+                }
+                else{
+                    error_msg()
+                }
+            })
+            .catch(resp => {
+                error_msg()
+                console.log(resp.data);
+            })
+        }
                 
         return {
             handleCurrentChange,
             handleButtonClick,
             handleSizeChange,
+            addMusicButton,
+            success_msg,
+            error_msg,
+            delMusicButton,
             currentPage,
             pageSize,
             total,
@@ -131,7 +226,9 @@ components:{
 }
 .Plus{
     float: right;
-    
+}
+.Close{
+    float: right;
 }
 
 </style>

@@ -2,6 +2,7 @@ import axios from 'axios';
 
 export default ({
     state: {
+        user_id:'',
         username:'',
         name:'',
         photo_path:'',
@@ -24,6 +25,7 @@ export default ({
             state.pulling_info = pulling
         },
         updataUser(state,user){
+            state.user_id = user.user_id
             state.username = user.username;
             state.name = user.name;
             state.photo_path = user.photo_path;
@@ -32,6 +34,7 @@ export default ({
             state.is_login = user.is_login
         },
         logout(state){
+            state.user_id = '',
             state.username = '';
             state.name = '';
             state.photo_path = '';
