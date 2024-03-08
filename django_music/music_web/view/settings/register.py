@@ -11,6 +11,8 @@ from django.contrib.auth.models import User
 from rest_framework.decorators import permission_classes
 from rest_framework.views import APIView
 from rest_framework.response import Response
+
+from django_music import settings
 from music_web.models.user.music_user import Music_User
 
 
@@ -48,7 +50,12 @@ class Register_Api(APIView):
         user.save()
         if not info:
             info = "该用户很懒，什么都没写"
-        Music_User.objects.create(user=user,info=info,name=name)
+        image_path = settings.VATE_URL+'image/'+username+'.png'
+        print(image_path)
+        Music_User.objects.create(user=user,info=info,name=name,photo_path=image_path)
+
+
+
         return Response({
             "error_msg": "success"
         })

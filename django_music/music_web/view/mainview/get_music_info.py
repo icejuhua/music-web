@@ -3,7 +3,7 @@
 # @Time : 2024/2/20 17:15
 # @Author : lanlan
 # @Email : lanlan_bupt@126.com
-# @File : get_music_info.py
+# @File : get_detail_music_info.py
 # @Software: PyCharm
 import json
 

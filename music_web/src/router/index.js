@@ -5,6 +5,7 @@ import MainPageView from '@/views/MainPageView'
 import UserInfoView from '@/views/user/account/UserInfoView'
 import store from '@/store/index'
 import MyFavoriteMusicView from '@/views/MyFavoriteMusicView'
+import MusicInfoView from '@/views/music/MusicInfoView'
 
 const routes = [
     {
@@ -14,6 +15,14 @@ const routes = [
         meta:{
             requestAuth:true
         }
+    },
+    {
+        path:'/music/music-info',
+        name:"music_info",
+        component:MusicInfoView,
+        meta: {
+          requestAuth:true
+        },
     },
     {
         path:'/user/account/login',

@@ -52,7 +52,8 @@ class reFreshCDN(APIView):
             return Response({
                 "error_msg":"请先登录"
             })
-        url = settings.VATE_URL+user_name+'.png'
+        url = settings.VATE_URL+'image/'+user_name+'.png'
+        print(url)
         # 需要刷新的文件链接
         urls = [
             url

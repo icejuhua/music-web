@@ -15,6 +15,7 @@ from music_web.view.settings.getinfo import GetInfo_Api
 from music_web.view.settings.test import AutuTest
 from music_web.view.settings.changeinfo import ChangeInfo
 from music_web.view.settings.uploadHeadImage import uploadImg,reFreshCDN
+from music_web.view.settings.change_password import Change_PassWord
 
 urlpatterns = [
     #path('', name="index"),
@@ -32,7 +33,8 @@ urlpatterns = [
     #获取上传七牛云的token
     path("upload-token/",uploadImg.as_view(),name='uploadImg'),
     #获取刷新CDN的链接
-    path("refresh-cdn/",reFreshCDN.as_view(),name='refresh-cdn')
-
+    path("refresh-cdn/",reFreshCDN.as_view(),name='refresh-cdn'),
+    #修改密码
+    path("change-password/",Change_PassWord.as_view(),name='changepasswrod')
 ]
 

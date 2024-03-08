@@ -15,12 +15,15 @@
                             </el-button>
                             <template #dropdown>
                             <el-dropdown-menu>
-                                <el-dropdown-item command="a">mp3</el-dropdown-item>
-                                <el-dropdown-item command="b">flac</el-dropdown-item>
-                                <el-dropdown-item command="c">WAV</el-dropdown-item>
+                                <el-dropdown-item @click="download_music_encode(row,'mp3')" command="mp3">mp3</el-dropdown-item>
+                                <el-dropdown-item @click="download_music_encode(row,'flac')" command="flac">flac</el-dropdown-item>
+                                <el-dropdown-item @click="download_music_encode(row,'wav')" command="wav">wav</el-dropdown-item>
                             </el-dropdown-menu>
                             </template>
                         </el-dropdown>
+                        <router-link :to="{name:'music_info'}">
+                            <el-button @click="detailBtn(row)" class="detail">详情</el-button>
+                        </router-link>
                         <div v-if="$route.name == 'main_page_view'">
                             <el-button v-if="!row.add_status" circle @click="addMusicButton(row)" type="primary" class="Plus">
                                 <el-icon size="30"><CirclePlus /></el-icon>
@@ -65,6 +68,8 @@ import { ref  } from "vue"
 import { useRoute } from "vue-router";
 import axios from "axios";
 import { ElNotification } from 'element-plus'
+import { ElMessage } from 'element-plus'
+
 export default {
 components:{
             APlayer
@@ -79,8 +84,14 @@ components:{
         let pageSize = ref(5);
         let total = ref(0);
         const route = useRoute()
-        console.log(route.name);
         
+        const download_success = () => {
+        ElNotification({
+            title: 'Success',
+            message: '操作成功',
+            type: 'success',
+        })
+        }
 
         const success_msg = () => {
         ElNotification({
@@ -96,7 +107,14 @@ components:{
             type: 'error',
         })
         }
+
+        const detailBtn = (row) =>{
+            store.state.music.music_id = row.music_id
+        }
+
+
         const get_info = (type) =>{
+            store.dispatch("updataAccessFromRefresh")
             store.dispatch("get_music_info",{
                 get_type:type,
                 success(){
@@ -104,10 +122,11 @@ components:{
                     audio.value = store.state.music.musicList
                     //获取数据长度
                     total.value = store.state.music.musicList.length;
-                    console.log(store.state.music.musicList);
                     // 在组件加载时触发一次初始化
                     handleCurrentChange(currentPage.value);
-                    
+                },
+                error(){
+                    error_msg()
                 }
         })
         }
@@ -196,6 +215,32 @@ components:{
                 console.log(resp.data);
             })
         }
+
+        //下拉菜单的操作
+        const handleCommand = (command) => {
+            ElMessage(`正在下载格式为： ${command} `)
+            
+        }
+        //转码下载
+        const download_music_encode = (row,type) => {
+            console.log(row,type);
+            //每次请求前更新一下access
+            store.dispatch("updataAccessFromRefresh")
+            store.dispatch("download_music_encode",{
+                music_type:row.music_type,
+                url:row.url,
+                music_name:row.name,
+                encode_type:type,
+                success(){
+                    download_success()
+                },
+                error(){
+                    error_msg()
+                }
+            })
+
+        }   
+
                 
         return {
             handleCurrentChange,
@@ -205,6 +250,9 @@ components:{
             success_msg,
             error_msg,
             delMusicButton,
+            handleCommand,
+            download_music_encode,
+            detailBtn,
             currentPage,
             pageSize,
             total,
@@ -228,6 +276,9 @@ components:{
     float: right;
 }
 .Close{
+    float: right;
+}
+.detail{
     float: right;
 }
 

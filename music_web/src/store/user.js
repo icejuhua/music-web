@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 export default ({
+    
     state: {
         user_id:'',
         username:'',
@@ -132,11 +133,12 @@ export default ({
                     data.success()
                 }
                 else{
-                    data.error(resp)
+                    data.error()
                 }
             })
             .catch(resp =>{
-                data.error(resp)
+                console.log(resp);
+                data.error()
             })
         },
         //退出，清空两个token，并且刷新当前界面

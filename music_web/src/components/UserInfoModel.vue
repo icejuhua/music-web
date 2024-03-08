@@ -35,18 +35,27 @@
 <script>
 import { useStore } from 'vuex';
 import { ref } from 'vue';
+
 export default{
     setup(){
         let new_info = ref('')
         let new_name = ref('')
         const store = useStore()
         const changeinfo = () =>{
-            console.log("123");
+            store.dispatch("updataAccessFromRefresh")
             store.dispatch("changeinfo",{
                 name:new_name.value,
                 info:new_info.value,
                 success(){
-                    
+                    store.dispatch("getinfo",{
+                      success(){
+
+                      },
+                      error(){
+
+                      }
+                    })
+
                 },
                 error(){
                     

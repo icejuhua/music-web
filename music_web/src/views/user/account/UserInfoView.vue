@@ -3,7 +3,9 @@
             <div class="col-3">
                 <div class="card" style="margin-top : 20px;">
                     <div class="card-body" style="text-align: center;">
-                        <img class="head_img img-fluid"  :src=$store.state.user.photo_path alt="">
+                        <el-avatar size="large" fit="cover"
+                            :src=$store.state.user.photo_path
+                        />
                     </div>
                     <div class="justify-content-center d-flex">
                         <el-button round size="large"  @click="dialogVisible = true" type="success">修改头像</el-button>
